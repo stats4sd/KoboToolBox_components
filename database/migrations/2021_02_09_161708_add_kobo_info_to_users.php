@@ -14,10 +14,10 @@ class AddKoboInfoToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('username');
-            $table->string('avatar');
-            $table->string('kobo_id');
-            $table->string('slug');
+            $table->string('username')->nullable();
+            $table->string('avatar')->nullable();
+            $table->string('kobo_id')->nullable();
+            $table->string('slug')->nullable();
         });
     }
 
