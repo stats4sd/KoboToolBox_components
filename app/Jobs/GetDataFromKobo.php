@@ -2,26 +2,17 @@
 
 namespace App\Jobs;
 
-use Exception;
 use App\Models\User;
-use App\Models\Region;
 use App\Models\DataMap;
 use App\Models\Xlsform;
-use App\Models\Comunidad;
-use App\Models\Municipio;
-use App\Models\Submission;
 use Illuminate\Support\Str;
-use App\Models\Departamento;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Http\Controllers\DataMapController;
-use App\Models\Farmer;
-use App\Models\Variable;
-use App\Models\Variety;
+use App\Models\TeamSubmission;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
@@ -59,11 +50,11 @@ class GetDataFromKobo implements ShouldQueue
         $data = $response['results'];
 
         //compare
-        $submissions = Submission::where('xlsform_id', '=', $this->form->id)->get();
+        $submissions = TeamSubmission::where('xlsform_id', '=', $this->form->id)->get();
 
         foreach ($data as $newSubmission) {
             if (!in_array($newSubmission['_id'], $submissions->pluck('id')->toArray())) {
-                Submission::create([
+                TeamSubmission::create([
                     'id' => $newSubmission['_id'],
                     'uuid' => $newSubmission['_uuid'],
                     'xlsform_id' => $this->form->id,

@@ -22,4 +22,5 @@ Route::group([
     Route::crud('datamap', 'DataMapCrudController');
     Route::crud('variable', 'VariableCrudController');
     Route::crud('choice', 'ChoiceCrudController');
+    Route::crud('teamsubmission', 'TeamSubmissionCrudController');
 }); // this should be the absolute last line of this file

@@ -8,3 +8,4 @@
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('datamap') }}'><i class='nav-icon la la-question'></i> DataMaps</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('variable') }}'><i class='nav-icon la la-question'></i> Variables</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('choice') }}'><i class='nav-icon la la-question'></i> Choices</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('teamsubmission') }}'><i class='nav-icon la la-question'></i> TeamSubmissions</a></li>
