@@ -52,35 +52,16 @@ class XlsformCrudController extends CrudController
                 'type' => 'text',
             ],
             [
-                'name' => 'version',
-                'label' => 'Version - Uploaded',
-                'type' => 'date',
+                'name' => 'xlsfile',
+                'type' => 'upload',
+                'upload' => true,
+                'disk' => 'public' ,
+                'label' => 'Upload the XLS Form file',
             ],
-            [
-                'name' => 'kobo_id',
-                'label' => 'View on Kobotools',
-                'type' => 'closure',
-                'function' => function ($entry) {
-                    if ($entry->kobo_id) {
-                        return "<a target='_blank' href='https://kf.kobotoolbox.org/#/forms/".$entry->kobo_id."'>Kobotoolbox Link</a>";
-                    }
-                    return "<span class='text-secondary'>Not Deployed</span>";
-                },
-            ],
-            [
-                'name' => 'live',
-                'label' => 'Is Form Available to Projects?',
-                'type' => 'boolean',
-            ],
-            [
-                'name' => 'link_page',
-                'label' => 'Associated Guide(s)',
-                'type' => "closure",
-                'function' => function ($entry) {
-                    $page = $entry->link_page;
-                    return '<a href="'.url(''.$page.'').'" target="_blank">'.$page.'</a>';
-                },
-
+            [   // CKEditor
+                'name' => 'description',
+                'type' => 'text',
+                'label' => 'Description',
             ],
             [
                 'name' => 'media',
@@ -109,16 +90,6 @@ class XlsformCrudController extends CrudController
                 'upload' => true,
                 'disk' => 'public' ,
                 'label' => 'Upload the XLS Form file',
-            ],
-            [
-                'name' => 'live',
-                'label' => 'Is Form Available to Projects?',
-                'type' => 'boolean',
-            ],
-            [
-                'name' => 'link_page',
-                'type' => 'url',
-                'label' => 'Add the url to the online guide for this form',
             ],
             [   // CKEditor
                 'name' => 'description',
@@ -258,8 +229,6 @@ class XlsformCrudController extends CrudController
 
     public function regenerateCsvFileAttachments(Xlsform $xlsform)
     {
-
-
         return response('files generating; check the logs in a few minutes to confirm success');
     }
 }

@@ -19,6 +19,7 @@ class CreateXlsformsTable extends Migration
             $table->string('xlsfile');
             $table->text('description')->nullable();
             $table->text('media')->nullable();
+            $table->json('csv_lookups')->nullable();
             $table->timestamps();
         });
     }
