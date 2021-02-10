@@ -1,0 +1,1 @@
+<a href="{{ url('dataTemplate/storeFile') }} " style="width:250px" class="btn btn-info mt-1"><i class="	fa fa-cloud-upload"></i> Store Data in DB</a>
