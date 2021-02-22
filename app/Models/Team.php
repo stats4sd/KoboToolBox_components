@@ -34,6 +34,20 @@ class Team extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+    public function team_members()
+    {
+        return $this->hasMany(TeamMember::class);
+    }
+
+    public function invites()
+    {
+        return $this->hasMany(Invite::class);
+    }
+
+    public function team_xlsforms()
+    {
+        return $this->hasMany(TeamXlsform::class);
+    }
 
     /*
     |--------------------------------------------------------------------------

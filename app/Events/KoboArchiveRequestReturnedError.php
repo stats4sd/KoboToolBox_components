@@ -3,7 +3,7 @@
 namespace App\Events;
 
 use App\Models\User;
-use App\Models\Xlsform;
+use App\Models\TeamXlsform;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -24,7 +24,7 @@ class KoboArchiveRequestReturnedError implements ShouldBroadcast
     /**
      * Create a new event instance.
      * @param User $user
-     * @param Xlsform|ProjectXlsform $form
+     * @param TeamXlsform $form
      * @return void
      */
     public function __construct(User $user, $form, $errorType, $errorMessage)

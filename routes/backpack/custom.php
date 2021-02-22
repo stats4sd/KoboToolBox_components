@@ -19,8 +19,12 @@ Route::group([
     Route::crud('team', 'TeamCrudController');
     Route::crud('teamxlsform', 'TeamXlsformCrudController');
     Route::crud('xlsform', 'XlsformCrudController');
+    Route::post('teamxlsform/{team_xlsform}/deploytokobo', 'TeamXlsformCrudController@deployToKobo');
+    Route::post('teamxlsform/{team_xlsform}/syncdata', 'TeamXlsformCrudController@syncData');
+    Route::post('teamxlsform/{team_xlsform}/archive', 'TeamXlsformCrudController@archiveOnKobo');
     Route::crud('datamap', 'DataMapCrudController');
     Route::crud('variable', 'VariableCrudController');
     Route::crud('choice', 'ChoiceCrudController');
     Route::crud('teamsubmission', 'TeamSubmissionCrudController');
+    Route::crud('team_member', 'TeamMemberCrudController');
 }); // this should be the absolute last line of this file

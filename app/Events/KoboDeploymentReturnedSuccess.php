@@ -22,7 +22,7 @@ class KoboDeploymentReturnedSuccess implements ShouldBroadcast
     /**
      * Create a new event instance.
      * @param User $user
-     * @param Xlsform|ProjectXlsform $form
+     * @param TeamXlsform $form
      * @return void
      */
     public function __construct(User $user, $form)

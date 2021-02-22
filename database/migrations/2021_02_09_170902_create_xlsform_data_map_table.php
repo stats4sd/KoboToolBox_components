@@ -13,7 +13,7 @@ class CreateXlsformDataMapTable extends Migration
      */
     public function up()
     {
-        Schema::create('xlsform_data_map', function (Blueprint $table) {
+        Schema::create('_link_xlsforms_datamaps', function (Blueprint $table) {
             $table->id();
             $table->foreignId('xlsform_id')->constrained()->onDelete('cascade');
             $table->foreignId('data_map_id')->constrained('data_maps')->onDelete('cascade');
@@ -28,6 +28,6 @@ class CreateXlsformDataMapTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('xlsform_data_map');
+        Schema::dropIfExists('_link_xlsforms_datamaps');
     }
 }

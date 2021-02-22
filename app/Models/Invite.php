@@ -34,6 +34,15 @@ class Invite extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'inviter_id');
+    }
+
+    public function team()
+    {
+        return $this->belongsTo(Team::class);
+    }
 
     /*
     |--------------------------------------------------------------------------

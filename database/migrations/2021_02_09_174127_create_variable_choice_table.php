@@ -13,7 +13,7 @@ class CreateVariableChoiceTable extends Migration
      */
     public function up()
     {
-        Schema::create('variable_choice', function (Blueprint $table) {
+        Schema::create('_link_variables_choices', function (Blueprint $table) {
             $table->id();
             $table->foreignId('variable_id')->constrained()->onDelete('cascade');
             $table->foreignId('choice_id')->constrained()->onDelete('cascade');
@@ -28,6 +28,6 @@ class CreateVariableChoiceTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('variable_choice');
+        Schema::dropIfExists('_link_variables_choices');
     }
 }

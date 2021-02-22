@@ -34,6 +34,10 @@ class Variable extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+    public function choices()
+    {
+        return $this->belongsToMany(Choices::class, '_link_variables_choices');
+    }
 
     /*
     |--------------------------------------------------------------------------

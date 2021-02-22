@@ -36,7 +36,7 @@ class DataMap extends Model
     */
     public function xlsforms()
     {
-        return $this->belongsToMany(Xlsform::class, 'xlsform_data_map');
+        return $this->belongsToMany(Xlsform::class, '_link_xlsforms_datamaps');
     }
 
     /*

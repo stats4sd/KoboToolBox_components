@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\User;
-use App\Models\Xlsform;
+use App\Models\TeamXlsform;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Queue\SerializesModels;
@@ -24,10 +24,10 @@ class ArchiveKoboForm implements ShouldQueue
     /**
      * Create a new job instance.
      * @param User $user,
-     * @param Xlsform $form
+     * @param TeamXlsform $form
      * @return void
      */
-    public function __construct(User $user, Xlsform $form)
+    public function __construct(User $user, TeamXlsform $form)
     {
         //
         $this->user = $user;

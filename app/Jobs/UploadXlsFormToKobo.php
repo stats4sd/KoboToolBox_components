@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Queue\SerializesModels;
 use App\Events\KoboUploadReturnedError;
+use App\Models\TeamXlsform;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Queue\InteractsWithQueue;
 use GuzzleHttp\Exception\RequestException;
@@ -28,7 +29,7 @@ class UploadXlsFormToKobo implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(User $user, Xlsform $form)
+    public function __construct(User $user, TeamXlsform $form)
     {
         $this->user = $user;
         $this->form = $form;
@@ -46,7 +47,7 @@ class UploadXlsFormToKobo implements ShouldQueue
             ->withHeaders(["Accept" => "application/json"])
             ->attach(
                 'file',
-                Storage::get($this->form->xlsfile),
+                Storage::get($this->form->xlsform->xlsfile),
                 Str::slug($this->form->title)
             )
             ->post(config('services.kobo.endpoint').'/imports/', [

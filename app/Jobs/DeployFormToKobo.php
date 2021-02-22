@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\TeamXlsform;
 use App\Models\User;
 use App\Models\Xlsform;
 use Illuminate\Bus\Queueable;
@@ -24,7 +25,7 @@ class DeployFormToKobo implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(User $user, Xlsform $form)
+    public function __construct(User $user, TeamXlsform $form)
     {
         //
         $this->user = $user;

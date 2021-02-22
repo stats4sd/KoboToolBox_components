@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Models\User;
-use App\Models\Xlsform;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Queue\SerializesModels;
@@ -12,6 +11,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use App\Events\KoboUploadReturnedSuccess;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use App\Jobs\MediaFiles\GenerateCsvLookupFiles;
+use App\Jobs\MediaFiles\UploadMediaFileAttachementsToKoboForm;
+use App\Models\TeamXlsform;
 
 class CheckKoboUpload implements ShouldQueue
 {
@@ -27,11 +29,11 @@ class CheckKoboUpload implements ShouldQueue
     /**
      * Create a new job instance.
      * @param User $user
-     * @param Xlsform $form
+     * @param TeamXlsform $form
      * @param String $importUid
      * @return void
      */
-    public function __construct(User $user, Xlsform $form, String $importUid)
+    public function __construct(User $user, TeamXlsform $form, String $importUid)
     {
         $this->user = $user;
         $this->form = $form;
@@ -53,8 +55,8 @@ class CheckKoboUpload implements ShouldQueue
         ->get(config('services.kobo.endpoint') . '/imports/' . $this->importUid . '/')
         ->throw()
         ->json();
-
-
+        
+    
         \Log::info("importCheck");
         \Log::info($importCheck);
 
@@ -92,7 +94,7 @@ class CheckKoboUpload implements ShouldQueue
             SetKoboFormToActive::withChain([
                 new GenerateCsvLookupFiles($this->form),
                 new UploadMediaFileAttachementsToKoboForm($this->form),
-                new ShareFormWithAdmins($this->form),
+                // new ShareFormWithAdmins($this->form),
                 new DeploymentSuccessMessage($this->user, $this->form),
             ])->dispatch($this->user, $this->form);
         }

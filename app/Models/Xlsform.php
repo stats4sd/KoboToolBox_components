@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Storage;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
 class Xlsform extends Model
 {
@@ -32,6 +35,17 @@ class Xlsform extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+
+    public function team_xlsforms()
+    {
+        return $this->hasMany(TeamXlsform::class);
+    }
+
+    public function datamaps()
+    {
+        return $this->belongsToMany(DataMap::class, '_link_xlsforms_datamaps');
+    }
+
     public function setXlsfileAttribute($value)
     {
         $attribute_name = "xlsfile";
@@ -128,24 +142,6 @@ class Xlsform extends Model
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    | SCOPES
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    | ACCESSORS
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    | MUTATORS
     |--------------------------------------------------------------------------
     */
 }

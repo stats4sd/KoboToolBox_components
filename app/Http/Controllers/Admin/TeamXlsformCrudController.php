@@ -2,6 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Xlsform;
+use App\Models\TeamXlsform;
+use App\Jobs\ArchiveKoboForm;
+use App\Jobs\GetDataFromKobo;
+use App\Jobs\DeployFormToKobo;
+use Backpack\CRUD\app\Library\Widget;
 use App\Http\Requests\TeamXlsformRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -77,4 +83,79 @@ class TeamXlsformCrudController extends CrudController
     {
         $this->setupCreateOperation();
     }
+
+    public function setupShowOperation()
+    {
+        $this->crud->set('show.setFromDb', false);
+
+        Crud::button('deploy')
+        ->stack('line')
+        ->view('crud::buttons.deploy');
+
+        Crud::button('sync')
+        ->stack('line')
+        ->view('crud::buttons.sync');
+
+        Crud::button('archive')
+        ->stack('line')
+        ->view('crud::buttons.archive');
+
+        Crud::button('csv_generate')
+        ->stack('line')
+        ->view('crud::buttons.csv_generate');
+
+        $form = $this->crud->getCurrentEntry();
+
+        Widget::add([
+            'type' => 'view',
+            'view' => 'crud::widgets.xlsform_kobo_info',
+            'form' => $form,
+        ])->to('after_content');
+
+        $this->crud->addColumns([
+          
+            [
+                'name' => 'xlsform',
+                'label' => 'XLS Form File',
+                'type' => 'relationship',
+            ],
+        ]);
+    }
+
+
+    public function deployToKobo(TeamXlsform $team_xlsform)
+    {
+        DeployFormToKobo::dispatch(backpack_auth()->user(), $team_xlsform);
+
+        return response()->json([
+            'title' => $team_xlsform->title,
+            'user' => backpack_auth()->user()->email,
+        ]);
+    }
+
+    public function syncData(TeamXlsform $team_xlsform)
+    {
+        GetDataFromKobo::dispatchNow(backpack_auth()->user(), $team_xlsform);
+
+        $submissions = $team_xlsform->team_submissions;
+
+        return $submissions->toJson();
+    }
+
+    public function archiveOnKobo(TeamXlsform $team_xlsform)
+    {
+        ArchiveKoboForm::dispatch(backpack_auth()->user(), $team_xlsform);
+
+        return response()->json([
+            'title' => $team_xlsform->title,
+            'user' => backpack_auth()->user()->email,
+        ]);
+    }
+
+    public function regenerateCsvFileAttachments(TeamXlsform $team_xlsform)
+    {
+        return response('files generating; check the logs in a few minutes to confirm success');
+    }
 }
+
+

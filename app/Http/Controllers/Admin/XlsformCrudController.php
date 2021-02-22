@@ -163,17 +163,6 @@ class XlsformCrudController extends CrudController
                 'type' => 'text'
             ],
             [
-                'name' => 'link_page',
-                'label' => 'Guide for this Form',
-                'type' => 'text',
-                'wrapper' => [
-                    'href' => function ($crud, $column, $entry, $related_key) {
-                        return $entry->link_page;
-                    },
-                    'target' => "_blank",
-                ]
-            ],
-            [
                 'name' => 'description',
                 'label' => 'Description',
                 'type' => 'textarea'

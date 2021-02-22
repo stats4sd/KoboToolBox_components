@@ -49,7 +49,7 @@ class UploadFileToKoboForm implements ShouldQueue
             ->withHeaders(['Accept' => 'application/json'])
             ->attach(
                 'data_file',
-                Storage::disk('media')->get($this->media),
+                Storage::disk('public')->get($this->media),
                 $filename
             )
             ->post(config('services.kobo.old_endpoint') . '/api/v1/metadata', [

@@ -2,7 +2,7 @@
 
 namespace App\Jobs\MediaFiles;
 
-use App\Models\Xlsform;
+use App\Models\TeamXlsform;
 use Illuminate\Support\Arr;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Http;
@@ -13,10 +13,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
 /**
- * Job to handle replacing / uploading ALL media files for the passed xlsform.
+ * Job to handle replacing / uploading ALL media files for the passed TeamXlsform.
  *  - Deletes the old versions off Kobotoolbox
- *  - Takes the media and csv_lookup properties of the passed xlsform, and passes each file to the uploader
- * @param Xlsform $xlsform
+ *  - Takes the media and csv_lookup properties of the passed TeamXlsform, and passes each file to the uploader
+ * @param TeamXlsform $teamXlsform
  */
 class UploadMediaFileAttachementsToKoboForm implements ShouldQueue
 {
@@ -29,7 +29,7 @@ class UploadMediaFileAttachementsToKoboForm implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Xlsform $form)
+    public function __construct(TeamXlsform $form)
     {
         //
         $this->form = $form;
@@ -62,12 +62,14 @@ class UploadMediaFileAttachementsToKoboForm implements ShouldQueue
             }
         }
 
-        foreach ($this->form->media as $media) {
+        foreach ($this->form->xlsform->media as $media) {
+      
             UploadFileToKoboForm::dispatch($media, $koboform);
         }
 
-        foreach ($this->form->csv_lookups as $csvMedia) {
-            UploadFileToKoboForm::dispatch($csvMedia['csv_file'].'.csv', $koboform);
+        foreach ($this->form->xlsform->csv_lookups as $csvMedia) {
+        // added the media string to the csv_lookups media to find the path for this file 
+            UploadFileToKoboForm::dispatch('media/'.$csvMedia['csv_file'].'.csv', $koboform);
         }
     }
 }

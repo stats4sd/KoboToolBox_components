@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class TeamSubmission extends Model
+class TeamMember extends Model
 {
     use CrudTrait;
 
@@ -15,7 +16,7 @@ class TeamSubmission extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'team_submissions';
+    protected $table = 'team_members';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -35,18 +36,15 @@ class TeamSubmission extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function team()
     {
-        return $this->belongsto(Team::class);
+        return $this->belongsTo(Team::class);
     }
-
-    public function team_xlsform()
-    {
-        return $this->belongsto(TeamXlsform::class);
-    }
-
-
-
 
     /*
     |--------------------------------------------------------------------------

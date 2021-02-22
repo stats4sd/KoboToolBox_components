@@ -2,7 +2,7 @@
 
 namespace App\Jobs\MediaFiles;
 
-use App\Models\Xlsform;
+use App\Models\TeamXlsform;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
@@ -14,22 +14,22 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 
 /**
  * Job to generate the csv files from the specified mysql tables/views. Generates all the csv files required for the xlsform passed to it, as defined in the xlsform->csv_lookups property
- * @param Xlsform $xlsform
+ * @param TeamXlsform $form
  */
 class GenerateCsvLookupFiles implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $xlsform;
+    public $form;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Xlsform $xlsform)
+    public function __construct(TeamXlsform $form)
     {
-        $this->xlsform = $xlsform;
+        $this->form = $form;
     }
 
     /**
@@ -39,7 +39,7 @@ class GenerateCsvLookupFiles implements ShouldQueue
      */
     public function handle()
     {
-        $mediaToGenerate = $this->xlsform->csv_lookups;
+        $mediaToGenerate = $this->form->xlsform->csv_lookups;
 
         foreach ($mediaToGenerate as $media) {
             $scriptPath = base_path().'/scripts/save_table.py';

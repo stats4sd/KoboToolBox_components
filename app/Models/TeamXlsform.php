@@ -35,6 +35,21 @@ class TeamXlsform extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function team()
+    {
+        return $this->belongsTo(Team::class);
+    }
+
+    public function xlsform()
+    {
+        return $this->belongsTo(Xlsform::class);
+    }
+
+    public function team_submissions()
+    {
+        return $this->hasMany(TeamSubmission::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -46,6 +61,11 @@ class TeamXlsform extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+
+    public function getTitleAttribute()
+    {
+        return $this->team->name.'-'.$this->xlsform->title;
+    }
 
     /*
     |--------------------------------------------------------------------------
