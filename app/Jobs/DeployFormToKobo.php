@@ -39,14 +39,14 @@ class DeployFormToKobo implements ShouldQueue
      */
     public function handle()
     {
-
+  
         //if form is not already on Kobo, create asset...
         if(! $this->form->kobo_id) {
             // Create new Kobo Asset
             $response = Http::withBasicAuth(config('services.kobo.username'), config('services.kobo.password'))
             ->withHeaders(["Accept" => "application/json"])
             ->post(config('services.kobo.endpoint')."/api/v2/assets/", [
-                "name" => "TEST VERSION: " . $this->form->title,
+                "name" =>  $this->form->title,
                 "asset_type" => "survey",
             ])
             ->throw() // throw error and halt if 4** or 5**

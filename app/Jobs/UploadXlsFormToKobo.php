@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Models\User;
-use App\Models\Xlsform;
 use Illuminate\Support\Str;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Log;
@@ -42,7 +41,6 @@ class UploadXlsFormToKobo implements ShouldQueue
      */
     public function handle()
     {
-        
         $response = Http::withBasicAuth(config('services.kobo.username'), config('services.kobo.password'))
             ->withHeaders(["Accept" => "application/json"])
             ->attach(

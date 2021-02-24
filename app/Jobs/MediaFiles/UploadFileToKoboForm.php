@@ -2,7 +2,6 @@
 
 namespace App\Jobs\MediaFiles;
 
-use App\Models\Xlsform;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Bus\Queueable;
@@ -60,6 +59,7 @@ class UploadFileToKoboForm implements ShouldQueue
             ->throw()
             ->json();
 
+            
         \Log::info('media file uploaded');
         \Log::info($upload);
     }

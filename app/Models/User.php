@@ -52,4 +52,9 @@ class User extends Authenticatable
         return $this->hasMany(Invite::class, 'inviter_id');
     }
 
+    public function teams()
+    {
+        return $this->hasMany(Teams::class);
+    }
+
 }

@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Models\User;
 use App\Models\DataMap;
-use App\Models\Xlsform;
 use Illuminate\Support\Str;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Log;
@@ -13,6 +12,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Http\Controllers\DataMapController;
 use App\Models\TeamSubmission;
+use App\Models\TeamXlsform;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
@@ -27,7 +27,7 @@ class GetDataFromKobo implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(User $user, Xlsform $form)
+    public function __construct(User $user, TeamXlsform $form)
     {
         $this->form = $form;
     }
@@ -50,7 +50,7 @@ class GetDataFromKobo implements ShouldQueue
         $data = $response['results'];
 
         //compare
-        $submissions = TeamSubmission::where('xlsform_id', '=', $this->form->id)->get();
+        $submissions = TeamSubmission::where('team_xlsform_id', '=', $this->form->id)->get();
       
         foreach ($data as $newSubmission) {
             if (!in_array($newSubmission['_id'], $submissions->pluck('id')->toArray())) {
@@ -64,7 +64,7 @@ class GetDataFromKobo implements ShouldQueue
                
                 $newSubmission = $this->deleteGroupName($newSubmission);
 
-                $xls_form = Xlsform::findOrfail($this->form->id);
+                $xls_form = TeamXlsform::findOrfail($this->form->id);
 
                 foreach ($xls_form->datamaps as $dataMap) {
                     

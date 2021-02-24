@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\User;
+use App\Mail\InviteUser;
+use Illuminate\Support\Str;
 use App\Http\Requests\InviteRequest;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -14,7 +19,7 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 class InviteCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation { store as traitStore; }
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
@@ -58,13 +63,40 @@ class InviteCrudController extends CrudController
     {
         CRUD::setValidation(InviteRequest::class);
 
-        CRUD::setFromDb(); // fields
-
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
-         */
+        CRUD::addFields([
+            [
+                'name' => 'team_id',
+                'label' => 'Select team',
+                'type' => 'select',
+                'entity'    => 'team', 
+                'model'     => "App\Models\Team", 
+                'attribute' => 'name',
+            ],
+          
+            [
+                'name' => 'inviter_id',
+                'label' => 'Who inviter the user',
+                'type' => 'select',
+                'entity'    => 'user', 
+                'model'     => "App\Models\User", 
+                'attribute' => 'name',
+                'default' => backpack_user()->id,
+            ],
+            [
+                'name' => 'token',
+                'type' => 'hidden',
+                'value' => Str::random(60),
+            ],
+            [
+                'name' => 'name',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'email',
+                'type' => 'email',
+            ]
+        ]);
+       
     }
 
     /**
@@ -76,5 +108,28 @@ class InviteCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    public function store(InviteRequest $request)
+    {
+        // do something before validation, before save, before everything
+        $response = $this->traitStore();
+        $text_password = Str::random(8);
+        $password = Hash::make($text_password);
+  
+        $user = User::create([
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'password'=> $password,
+        ]);
+
+        
+        $user->save();
+        //$user->teams()->sync($request['team_id']); 
+        
+        Mail::to($request['email'])->send(new InviteUser($user, $text_password));
+        // do something after save
+        return $response;
+
     }
 }

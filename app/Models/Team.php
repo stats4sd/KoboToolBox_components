@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
 class Team extends Model
 {
@@ -49,6 +50,11 @@ class Team extends Model
         return $this->hasMany(TeamXlsform::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'creator_id');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -66,4 +72,15 @@ class Team extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+  
+    public function setImageAttribute($value)
+    {
+        $attribute_name = "image";
+        $disk = "public";
+        $destination_path = "team_avatar";
+
+        $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path);
+
+    }
+    
 }

@@ -39,13 +39,23 @@ class TeamMemberCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // columns
-
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
-         */
+        $this->crud->addColumns([
+            [
+                'name' => 'team',
+                'label' => 'Team Name',
+                'type' => 'relationship',
+            ],
+            [
+                'name' => 'user',
+                'label' => 'User',
+                'type' => 'relationship',
+            ],
+            [
+                'name' => 'is_admin',
+                'label' => 'Is admin',
+                'type' => 'check',
+            ],
+        ]);
     }
 
     /**
@@ -58,13 +68,23 @@ class TeamMemberCrudController extends CrudController
     {
         CRUD::setValidation(TeamMemberRequest::class);
 
-        CRUD::setFromDb(); // fields
-
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
-         */
+        $this->crud->addFields([
+            [
+                'name' => 'team',
+                'label' => 'Team Name',
+                'type' => 'relationship',
+            ],
+            [
+                'name' => 'user',
+                'label' => 'User',
+                'type' => 'relationship',
+            ],
+            [
+                'name' => 'is_admin',
+                'label' => 'Is admin',
+                'type' => 'checkbox',
+            ],
+        ]);
     }
 
     /**

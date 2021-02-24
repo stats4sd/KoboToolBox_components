@@ -17,11 +17,11 @@ class CreateTeamsTable extends Migration
             $table->id();
             $table->foreignId('creator_id')->constrained('users')->onDelete('cascade');
             $table->string('name')->unique();
-            $table->string('slug')->unique();
-            $table->text('description');
-            $table->tinyInteger('status');
-            $table->string('image');
-            $table->tinyInteger('privacy');
+            $table->string('slug')->unique()->nullable();
+            $table->text('description')->nullable();
+            $table->tinyInteger('status')->nullable();
+            $table->string('image')->nullable();
+            $table->tinyInteger('privacy')->nullable();
             $table->softDeletes($column = 'deleted_at', $precision = 0);
             $table->timestamps();
         });
